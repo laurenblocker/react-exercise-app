@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function DurationExercise({ name }) {
+function RunningExercise() {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [laps, setLaps] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,10 +19,16 @@ function DurationExercise({ name }) {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  const startTimer = () => setIsRunning(true);
+  const startStopTimer = () => setIsRunning(!isRunning);
+
+  const recordLap = () => {
+    setLaps([...laps, time]);
+  };
+
   const resetTimer = () => {
     setIsRunning(false);
     setTime(0);
+    setLaps([]);
   };
 
   const formatTime = (time) => {
@@ -31,13 +38,22 @@ function DurationExercise({ name }) {
   };
 
   return (
-    <div className="app-container"> {/* Keeps everything centered */}
-      <h2>{name}</h2>
+    <div className="app-container">
+      <h2>Running Exercise</h2>
       <p>Time: {formatTime(time)}</p>
-      <div className="exercise-buttons"> {/* Added class for styling */}
-        <button onClick={startTimer}>Start</button>
-        <button onClick={resetTimer}>Reset</button>
-      </div>
+      <button onClick={startStopTimer}>{isRunning ? "Pause" : "Start"}</button>
+      <button onClick={recordLap} disabled={!isRunning}>
+        Record Lap
+      </button>
+      <button onClick={resetTimer}>Reset</button>
+
+      <h3>Laps</h3>
+      <ul>
+        {laps.map((lap, index) => (
+          <li key={index}>Lap {index + 1}: {formatTime(lap)}</li>
+        ))}
+      </ul>
+
       <button className="back-button" onClick={() => navigate("/")}>
         Back to Home
       </button>
@@ -45,4 +61,4 @@ function DurationExercise({ name }) {
   );
 }
 
-export default DurationExercise;
+export default RunningExercise;
