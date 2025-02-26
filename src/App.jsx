@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import RepetitionExercise from "./components/RepetitionExercise";
 import DurationExercise from "./components/DurationExercise";
 import RunningExercise from "./components/RunningExercise"; // Import new component
+import './App.css';
+
 
 function Home() {
   return (
